@@ -11,7 +11,7 @@ Una shell mínima, pero robusta, con customización, funcionalidades básicas y 
 | **Espera de procesos con `wait()`/`waitpid()`** | ❌ | Base |
 | **Manejo de errores en comandos y ejecución** | ❌ | Base |
 | **Redirección de salida (`>`)** | ❌ | Base |
-| **Comando de salida (`salir`)** | ❌ | Base |
+| **Comando de salida (`salir`)** | 🚧 | Base |
 | **Pipes simples (`cmd1 \| cmd2`)** | ❌ | Extra |
 | **Tareas en segundo plano (`&`)** | ❌ | Extra |
 | **Redirección de entrada (`<`) y anexo (`>>`)** | ❌ | Extra |
