@@ -29,7 +29,11 @@ void Shell::run() {
         if(args[0] == "salir"){
           break;
         }
+        try{
           ejecutar(args);
+        } catch (system_error &e){
+           cerr << "[SHELL] " << e.what() << endl; 
+        }
     }
 }
 
@@ -57,7 +61,7 @@ void Shell::ejecutar(const vector<string> &args){
     pid_t pid = fork();
 
     if(pid == -1) {
-      throw system_error(errno, generic_category(), "Fallo en fork");
+      throw system_error(errno, generic_category(), "[SHELL] Fallo en fork");
     }
 
     if(pid == 0) {
@@ -74,5 +78,18 @@ void Shell::ejecutar(const vector<string> &args){
           command_path = "/bin/" + args[0];
       }
       cout << "[SHELL] " << command_path << endl;
+    
+      execv(command_path.c_str(), c_args.data());
+      
+      cerr << "[SHELL] ERROR en execv: " << strerror(errno) << endl;
+      if (errno == ENOENT) {
+          cerr << "[SHELL] Comando '" << args[0] << "' no encontrado." << endl;
+      }
+      exit(EXIT_FAILURE);
+    } else {
+      int status;
+      if (waitpid(pid, &status, 0) == -1) {
+          throw system_error(errno, generic_category(), "[SHELL] Fallo en waitpid");
+      }
     }
 }
