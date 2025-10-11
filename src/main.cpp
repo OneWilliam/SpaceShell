@@ -1,7 +1,8 @@
 #include <iostream>
-
+#include "shell.hpp"
+using namespace std;
 
 int main (int argc, char *argv[]) {
-  std::cout << "Holaa " << std::endl;  
+  cout << "Holaa " << endl;  
   return 0;
 }
