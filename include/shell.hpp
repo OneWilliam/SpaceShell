@@ -9,6 +9,6 @@ class Shell {
   private:
     void mostrar_prompt();
     string leer_linea();
-    vector<string> parsear_linea(const string* linea);
+    vector<string> parsear_linea(const string &linea);
     int ejecutar_comando(const vector<string> &args);
 };
