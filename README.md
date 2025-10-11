@@ -6,14 +6,14 @@ Una shell mínima, pero robusta, con customización, funcionalidades básicas y 
 | Característica | Estado | Tipo |
 | :--- | :---: | :--- |
 | **Prompt personalizado y lectura de línea** | 🚧 | Base |
-| **Resolución de rutas (absolutas y en `/bin`)** | ❌ | Base |
-| **Ejecución con `fork()` y `exec*()`** | ❌ | Base |
-| **Espera de procesos con `wait()`/`waitpid()`** | ❌ | Base |
-| **Manejo de errores en comandos y ejecución** | ❌ | Base |
-| **Redirección de salida (`>`)** | ❌ | Base |
-| **Comando de salida (`salir`)** | 🚧 | Base |
-| **Pipes simples (`cmd1 \| cmd2`)** | ❌ | Extra |
-| **Tareas en segundo plano (`&`)** | ❌ | Extra |
+| **Resolución de rutas (absolutas y en `/bin`)** | ✅ | Base |
+| **Ejecución con `fork()` y `exec*()`** | ✅ | Base |
+| **Espera de procesos con `wait()`/`waitpid()`** | ✅ | Base |
+| **Manejo de errores en comandos y ejecución** | 🚧 | Base |
+| **Redirección de salida (`>`)** | 🚧 | Base |
+| **Comando de salida (`salir`)** | ✅ | Base |
+| **Pipes simples (`cmd1 \| cmd2`)** | 🚧 | Extra |
+| **Tareas en segundo plano (`&`)** | 🚧 | Extra |
 | **Redirección de entrada (`<`) y anexo (`>>`)** | ❌ | Extra |
 | **Comandos internos (`cd`, `pwd`, `history`, etc.)** | ❌ | Extra |
 | **Concurrencia con hilos (`parallel`)** | ❌ | Extra |
