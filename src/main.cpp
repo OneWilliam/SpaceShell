@@ -3,6 +3,7 @@
 using namespace std;
 
 int main (int argc, char *argv[]) {
-  cout << "Holaa " << endl;  
+  Shell SpaceShell;
+  SpaceShell.run();
   return 0;
 }
