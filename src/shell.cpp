@@ -8,6 +8,7 @@
 #include <system_error>
 #include <cerrno>
 #include <cstring>
+#include <fcntl.h>
 
 using namespace std;
 
@@ -55,6 +56,16 @@ void Shell::ejecutar(const ComandoInfo &comando){
     }
 
     if(pid == 0) {
+      if (!comando.outputFile.empty()) {
+            int file_fd = open(comando.outputFile.c_str(), O_WRONLY | O_CREAT | O_TRUNC, 0644);
+            if (file_fd == -1) {
+                cerr << "[ERROR] Error al abrir el archivo de salida: " << strerror(errno) << endl;
+                exit(EXIT_FAILURE);
+            }
+            dup2(file_fd, STDOUT_FILENO);
+            close(file_fd);
+      }
+
       vector<char*> c_args;
       
       for (const auto& arg : comando.args) {
