@@ -13,4 +13,6 @@ struct ComandoInfo {
 class Parser {
   public:
     vector<ComandoInfo> parsear_linea(const string &linea);
+  private:
+    vector<string> parsear(const string& linea);
 };

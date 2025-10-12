@@ -5,13 +5,7 @@
 using namespace std;
 
 vector<ComandoInfo> Parser::parsear_linea(const string &linea) {
-  stringstream ss(linea);
-  string token;
-  vector<string> tokens;
-  
-  while (ss >> token) {
-    tokens.push_back(token);
-  }
+  vector<string> tokens = parsear(linea);
 
   vector <ComandoInfo> pipeline;
   if (tokens.empty()) {
@@ -60,4 +54,40 @@ vector<ComandoInfo> Parser::parsear_linea(const string &linea) {
   }
 
   return pipeline;
+}
+
+
+vector<string> Parser::parsear(const string& linea) {
+    vector<string> tokens;
+    string token;
+    char comilla = 0;
+
+    for (char c : linea) {
+        if (comilla) {
+            if (c == comilla) {
+                comilla = 0;
+            } else {
+                token += c;
+            }
+        } else {
+            if (c == '\'' || c == '"') {
+                comilla = c;
+            } else if (isspace(c)) {
+                
+                if (!token.empty()) {
+                    tokens.push_back(token);
+                    token.clear();
+                }
+
+            } else {
+                token += c;
+            }
+        }
+    }
+
+    if (!token.empty()) {
+        tokens.push_back(token);
+    }
+
+    return tokens;
 }
