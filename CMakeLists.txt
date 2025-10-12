@@ -14,4 +14,5 @@ src/shell.cpp
 src/parser.cpp
 src/builtins.cpp
 src/signals.cpp
+src/prompt.cpp
 )

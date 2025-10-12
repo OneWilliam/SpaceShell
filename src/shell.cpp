@@ -26,7 +26,7 @@ void Shell::run() {
             continue;
         }
 
-        mostrar_prompt();
+        prompt.mostrar();
         linea = leer_linea();
 
         if (g_signal_recv == SIGINT) {
