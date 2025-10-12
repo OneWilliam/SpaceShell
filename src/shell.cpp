@@ -13,24 +13,24 @@ using namespace std;
 
 void Shell::run() {
     string linea;
-    vector<string> args;
+    ComandoInfo comando;
 
     while (true) {
         mostrar_prompt();
         linea = leer_linea();
-        args = parsear_linea(linea);
+        comando = parser.parsear_linea(linea);
 
         cout << "[INPUT] " << linea << endl;
         
-        if(args.empty()){
+        if(comando.args.empty()){
             continue;
         }
 
-        if(args[0] == "salir"){
+        if(comando.args[0] == "salir"){
           break;
         }
         try{
-          ejecutar(args);
+          ejecutar(comando);
         } catch (system_error &e){
            cerr << "[SHELL] " << e.what() << endl; 
         }
@@ -47,17 +47,7 @@ string Shell::leer_linea() {
     return linea;
 }
 
-vector<string> Shell::parsear_linea(const string &linea) {
-    stringstream ss(linea);
-    string token;
-    vector<string> tokens;
-    while(ss >> token){
-        tokens.push_back(token);
-    }
-    return tokens;
-}
-
-void Shell::ejecutar(const vector<string> &args){
+void Shell::ejecutar(const ComandoInfo &comando){
     pid_t pid = fork();
 
     if(pid == -1) {
@@ -67,15 +57,15 @@ void Shell::ejecutar(const vector<string> &args){
     if(pid == 0) {
       vector<char*> c_args;
       
-      for (const auto& arg : args) {
+      for (const auto& arg : comando.args) {
          c_args.push_back(const_cast<char*>(arg.c_str()));
       }
 
       c_args.push_back(nullptr);
 
-      string command_path = args[0];
+      string command_path = comando.args[0];
       if (command_path.find('/') == string::npos) {
-          command_path = "/bin/" + args[0];
+          command_path = "/bin/" + comando.args[0];
       }
       cout << "[SHELL] " << command_path << endl;
     
@@ -83,7 +73,7 @@ void Shell::ejecutar(const vector<string> &args){
       
       cerr << "[SHELL] ERROR en execv: " << strerror(errno) << endl;
       if (errno == ENOENT) {
-          cerr << "[SHELL] Comando '" << args[0] << "' no encontrado." << endl;
+          cerr << "[SHELL] Comando '" << comando.args[0] << "' no encontrado." << endl;
       }
       exit(EXIT_FAILURE);
     } else {
