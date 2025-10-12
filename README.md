@@ -12,10 +12,10 @@ Una shell mínima, pero robusta, con customización, funcionalidades básicas y 
 | **Manejo de errores en comandos y ejecución** | 🚧 | Base |
 | **Redirección de salida (`>`)** | 🚧 | Base |
 | **Comando de salida (`salir`)** | ✅ | Base |
-| **Pipes simples (`cmd1 \| cmd2`)** | 🚧 | Extra |
+| **Pipes simples (`cmd1 \| cmd2`)** | ✅ | Extra |
 | **Tareas en segundo plano (`&`)** | 🚧 | Extra |
 | **Redirección de entrada (`<`) y anexo (`>>`)** | ❌ | Extra |
-| **Comandos internos (`cd`, `pwd`, `history`, etc.)** | ❌ | Extra |
+| **Comandos internos (`cd`, `pwd`, `history`, etc.)** | 🚧 | Extra |
 | **Concurrencia con hilos (`parallel`)** | ❌ | Extra |
 | **Gestión de memoria (`meminfo`)** | ❌ | Extra |
 | **Manejo de señales (`SIGINT`)** | ❌ | Extra |
