@@ -10,6 +10,6 @@ class Shell {
   private:
     void mostrar_prompt();
     string leer_linea();
-    void ejecutar(const ComandoInfo &args);
+    void ejecutar(const vector<ComandoInfo> &args);
     Parser parser;
 };

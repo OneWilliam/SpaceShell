@@ -12,5 +12,5 @@ struct ComandoInfo {
 
 class Parser {
   public:
-    ComandoInfo parsear_linea(const string &linea);
+    vector<ComandoInfo> parsear_linea(const string &linea);
 };
