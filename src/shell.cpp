@@ -20,7 +20,6 @@ void Shell::run() {
         mostrar_prompt();
         linea = leer_linea();
         comandos = parser.parsear_linea(linea);
-
         cout << "[INPUT] " << linea << endl;
         
         if(comandos.empty()){
@@ -30,10 +29,15 @@ void Shell::run() {
         if(comandos[0].args[0] == "salir"){
           break;
         }
-        try{
-          ejecutar(comandos);
-        } catch (system_error &e){
-           cerr << "[SHELL] " << e.what() << endl; 
+
+        if (comandos.size() == 1 && builtin_manager.es_builtin(comandos[0].args[0])) {
+          builtin_manager.ejecutar(comandos[0]);
+        } else {
+          try { 
+              ejecutar(comandos);
+          }  catch (system_error &e){
+              cerr << "[SHELL] " << e.what() << endl; 
+          }
         }
     }
 }
