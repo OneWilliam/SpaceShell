@@ -7,4 +7,9 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 include_directories(include)
 
-add_executable(spaceshell src/main.cpp src/shell.cpp src/parser.cpp)
+add_executable(
+spaceshell
+src/main.cpp
+src/shell.cpp
+src/parser.cpp
+src/builtins.cpp)
