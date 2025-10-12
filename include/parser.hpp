@@ -4,15 +4,20 @@
 using namespace std;
 
 struct ComandoInfo {
-  vector<std::string> args;
+  vector<string> args;
   string outputFile;
+};
+
+struct Pipeline_cmd {
+  vector<ComandoInfo> pipeline;
+  bool background = false;
 };
 
 
 
 class Parser {
   public:
-    vector<ComandoInfo> parsear_linea(const string &linea);
+    Pipeline_cmd parsear_linea(const string &linea);
   private:
     vector<string> parsear(const string& linea);
 };

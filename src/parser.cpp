@@ -4,14 +4,20 @@
 
 using namespace std;
 
-vector<ComandoInfo> Parser::parsear_linea(const string &linea) {
+Pipeline_cmd Parser::parsear_linea(const string &linea) {
+  Pipeline_cmd resultado;
   vector<string> tokens = parsear(linea);
 
   vector <ComandoInfo> pipeline;
   if (tokens.empty()) {
-      return pipeline;
+      return resultado;
   }
   
+  if (tokens.back() == "&") {
+      resultado.background = true;
+      tokens.pop_back();
+  }
+
   pipeline.emplace_back();
   bool outputFileExp = false;
 
@@ -53,7 +59,8 @@ vector<ComandoInfo> Parser::parsear_linea(const string &linea) {
       return {};
   }
 
-  return pipeline;
+  resultado.pipeline = pipeline;
+  return resultado;
 }
 
 

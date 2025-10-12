@@ -11,7 +11,8 @@ class Shell {
   private:
     void mostrar_prompt();
     string leer_linea();
-    void ejecutar(const vector<ComandoInfo> &args);
+    void ejecutar(const Pipeline_cmd &args);
     Parser parser;
     BuiltinManager builtin_manager;
+    vector<pid_t> background_pids;
 };
