@@ -18,7 +18,7 @@ Una shell mínima, pero robusta, con customización, funcionalidades básicas y 
 | **Comandos internos (`cd`, `pwd`, `history`, etc.)** | 🚧 | Extra |
 | **Concurrencia con hilos (`parallel`)** | 🚧 | Extra |
 | **Gestión de memoria (`meminfo`)** | ❌ | Extra |
-| **Manejo de señales (`SIGINT`)** | ❌ | Extra |
+| **Manejo de señales (`SIGINT`)** | 🚧 | Extra |
 
  Leyenda de Estado: ✅ Implementado | 🚧 En Progreso | ❌ No Iniciado
 
