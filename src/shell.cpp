@@ -86,7 +86,9 @@ void Shell::ejecutar(const vector<ComandoInfo> &pipeline){
       return;
   }
 
-  if (pipeline.size() == 1) {
+  int pipeline_size = pipeline.size();
+
+  if (pipeline_size == 1) {
       pid_t pid = fork();
       if (pid == -1) { 
           throw system_error(errno, generic_category(), "[SHELL] Fallo en fork");
@@ -100,48 +102,60 @@ void Shell::ejecutar(const vector<ComandoInfo> &pipeline){
           }
       }
       return;
-    }
+  }
 
+  int in_fd = STDIN_FILENO;
+  std::vector<pid_t> child_pids;
+
+  for (int i = 0; i < pipeline_size; ++i) {
     int pipefd[2];
-    if (pipe(pipefd) == -1) {
-      throw system_error(errno, generic_category(), "[SHELL] Fallo en pipe");
+    if (i < pipeline_size - 1) {
+        if (pipe(pipefd) == -1) {
+            throw system_error(errno, generic_category(), "[SHELL] Fallo en pipe");
+        }
     }
 
-    pid_t pid1 = fork();
-    if (pid1 == -1) { 
-        throw system_error(errno, generic_category(), "[SHELL] Fallo en el primer fork del pipeline");
+    pid_t pid = fork();
+    if (pid == -1) {
+        throw system_error(errno, generic_category(), "[SHELL] Fallo en fork del pipeline");
     }
 
-    if (pid1 == 0) {
-        close(pipefd[0]);
-        dup2(pipefd[1], STDOUT_FILENO);
-        close(pipefd[1]);
-        ejecutar_comando(pipeline[0]);
+    if (pid == 0) {
+        if (in_fd != STDIN_FILENO) {
+            if (dup2(in_fd, STDIN_FILENO) == -1) {
+                cerr << "[SHELL] Error en dup2 (stdin): " << strerror(errno) << endl;
+                    exit(EXIT_FAILURE);
+                }
+                close(in_fd);
+            }
+
+            if (i < pipeline_size - 1) {
+                close(pipefd[0]);
+                if (dup2(pipefd[1], STDOUT_FILENO) == -1) {
+                    cerr << "[SHELL] Error en dup2 (stdout): " << strerror(errno) << endl;
+                    exit(EXIT_FAILURE);
+                }
+                close(pipefd[1]);
+            }
+
+            ejecutar_comando(pipeline[i]);
+        }
+
+        child_pids.push_back(pid);
+
+        if (in_fd != STDIN_FILENO) {
+            close(in_fd);
+        }
+
+        if (i < pipeline_size - 1) {
+            close(pipefd[1]);
+            in_fd = pipefd[0];
+        }
     }
 
-    pid_t pid2 = fork();
-    if (pid2 == -1) { 
-        throw system_error(errno, generic_category(), "[SHELL] Fallo en el segundo fork del pipeline");
+    for (pid_t child_pid : child_pids) {
+        if (waitpid(child_pid, nullptr, 0) == -1) {
+            throw system_error(errno, generic_category(), "[ERROR] Fallo en waitpid en el pipeline");
+        }
     }
-
-    if (pid2 == 0) {
-        close(pipefd[1]);
-        dup2(pipefd[0], STDIN_FILENO);
-        close(pipefd[0]);
-        ejecutar_comando(pipeline[1]);
-    }
-    
-    close(pipefd[0]);
-    close(pipefd[1]);
-
-    waitpid(pid1, nullptr, 0);
-    waitpid(pid2, nullptr, 0);
-
-    if (waitpid(pid1, nullptr, 0) == -1) {
-        throw system_error(errno, generic_category(), "[SHELL] Fallo en waitpid para el primer comando del pipeline");
-    }
-    if (waitpid(pid2, nullptr, 0) == -1) {
-        throw system_error(errno, generic_category(), "[SHELL] Fallo en waitpid para el segundo comando del pipeline");
-    }
-
 }
