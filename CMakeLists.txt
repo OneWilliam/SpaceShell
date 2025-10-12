@@ -12,4 +12,6 @@ spaceshell
 src/main.cpp
 src/shell.cpp
 src/parser.cpp
-src/builtins.cpp)
+src/builtins.cpp
+src/signals.cpp
+)

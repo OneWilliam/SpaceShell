@@ -1,4 +1,5 @@
 #include "shell.hpp"
+#include "signals.hpp"
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -10,39 +11,64 @@
 #include <cstring>
 #include <fcntl.h>
 #include <algorithm>
+#include <ios>
 
 using namespace std;
 
 void Shell::run() {
+    Signals::setup_handlers();
     string linea;
-    Pipeline_cmd comandos;
 
     while (true) {
-        int status;
-        pid_t finalizado_pid;
-        while ((finalizado_pid = waitpid(-1, &status, WNOHANG)) > 0) {
-            auto it = find(background_pids.begin(), background_pids.end(), finalizado_pid);
-            if (it != background_pids.end()) {
-                cout << endl << "[SHELL] [Proceso en segundo plano " << finalizado_pid << " ha terminado]" << endl;
-                background_pids.erase(it);
-            }
+        if (g_signal_recv == SIGINT) {
+            cout << "\n" << flush;
+            g_signal_recv = 0;
+            continue;
         }
 
         mostrar_prompt();
         linea = leer_linea();
-        comandos = parser.parsear_linea(linea);
-        cout << "[INPUT] " << linea << endl;
 
-        if(comandos.pipeline.empty()){
-          continue;
+        if (g_signal_recv == SIGINT) {
+            cout << "\n" << flush;
+            g_signal_recv = 0;
+            continue;
         }
 
-        if(comandos.pipeline[0].args[0] == "salir"){
+        if (cin.eof()) {
+            cout << "salir" << endl;
+            break;
+        }
+
+        if (cin.fail()) {
+            cin.clear();
+            continue;
+        }
+
+        if (linea.empty()) {
+            continue;
+        }        
+        cout << "[INPUT] " << linea << endl;
+        
+        if (linea.empty()) {
+            continue;
+        }
+
+        Pipeline_cmd comandos = parser.parsear_linea(linea);
+
+        if (comandos.pipeline.empty()) {
+            continue;
+        }
+
+        const auto& primer_cmd = comandos.pipeline.front();
+        const string& nombre_cmd = primer_cmd.args[0];
+
+        if(nombre_cmd == "salir"){
           break;
         }
 
-        if (comandos.pipeline.size() == 1 && builtin_manager.es_builtin(comandos.pipeline[0].args[0])) {
-          builtin_manager.ejecutar(comandos.pipeline[0]);
+        if (comandos.pipeline.size() == 1 && builtin_manager.es_builtin(nombre_cmd)) {
+          builtin_manager.ejecutar(primer_cmd);
         } else {
           try { 
               ejecutar(comandos);
@@ -54,12 +80,42 @@ void Shell::run() {
 }
 
 void Shell::mostrar_prompt() {
-    cout << ">>> ";
+    cout << ">>> " << flush;
 }
 
 string Shell::leer_linea() {
     string linea;
-    getline(cin, linea);
+    
+    if (g_signal_recv == SIGINT) {
+        g_signal_recv = 0;
+    }
+    
+    char ch;
+    while (true) {
+        ssize_t bytes_r = read(STDIN_FILENO, &ch, 1);
+        
+        if (bytes_r == 1) {
+            if (ch == '\n') {
+                break;
+            } else if (ch != '\r') {
+                linea += ch;
+            }
+        } else if (bytes_r == 0) {
+            cin.setstate(ios::eofbit);
+            break;
+        } else if (bytes_r < 0) {
+            if (errno == EINTR) {
+                if (g_signal_recv == SIGINT) {
+                    linea.clear();
+                    break;
+                }
+                continue;
+            } else {
+                break;
+            }
+        }
+    }
+    
     return linea;
 }
 
@@ -120,6 +176,9 @@ void Shell::ejecutar(const Pipeline_cmd &cmds) {
     }
 
     if (pid == 0) {
+        signal(SIGINT, SIG_DFL);
+        signal(SIGCHLD, SIG_DFL);
+        
         if (in_fd != STDIN_FILENO) {
             if (dup2(in_fd, STDIN_FILENO) == -1) {
                 cerr << "[SHELL] Error en dup2 (stdin): " << strerror(errno) << endl;
