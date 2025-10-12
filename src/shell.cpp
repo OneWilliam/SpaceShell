@@ -120,8 +120,25 @@ string Shell::leer_linea() {
 }
 
 void ejecutar_comando(const ComandoInfo &comando) {
+
+  if (!comando.inputFile.empty()) {
+      int file_fd = open(comando.inputFile.c_str(), O_RDONLY);
+      if (file_fd == -1) {
+          cerr << "[SHELL] Error al abrir el archivo de entrada: " << strerror(errno) << endl;
+          exit(EXIT_FAILURE);
+      }
+      dup2(file_fd, STDIN_FILENO);
+      close(file_fd);
+  }
+
   if (!comando.outputFile.empty()) {
-      int file_fd = open(comando.outputFile.c_str(), O_WRONLY | O_CREAT | O_TRUNC, 0644);
+      int flags = O_WRONLY | O_CREAT;
+      if (comando.anexar) {
+          flags |= O_APPEND;
+      } else {
+          flags |= O_TRUNC;
+      }
+      int file_fd = open(comando.outputFile.c_str(), flags, 0644);
       if (file_fd == -1) {
           cerr << "[SHELL] Error al abrir el archivo de salida: " << strerror(errno) << endl;
           exit(EXIT_FAILURE);

@@ -8,7 +8,6 @@ Pipeline_cmd Parser::parsear_linea(const string &linea) {
   Pipeline_cmd resultado;
   vector<string> tokens = parsear(linea);
 
-  vector <ComandoInfo> pipeline;
   if (tokens.empty()) {
       return resultado;
   }
@@ -18,48 +17,58 @@ Pipeline_cmd Parser::parsear_linea(const string &linea) {
       tokens.pop_back();
   }
 
-  pipeline.emplace_back();
+  resultado.pipeline.emplace_back(); 
   bool outputFileExp = false;
+  bool inputFileExp = false;
 
+  for (const auto& token : tokens) {
 
-  for (size_t i = 0; i < tokens.size(); ++i) {
-
-    if (tokens[i] == ">") {
-        if (outputFileExp) {
+    if (token == ">" || token == ">>") {
+        if (outputFileExp || inputFileExp) {
             cerr << "[SHELL] Error de sintaxis: Múltiples redirecciones no soportadas." << endl;
             return {};
         }
         outputFileExp = true;
-    } else if (tokens[i] == "|"){
-        if (pipeline.back().args.empty()) {
+        if (token == ">>") {
+            resultado.pipeline.back().anexar = true;
+        }
+    } else if (token == "<") {
+         if (outputFileExp || inputFileExp) {
+           cerr << "[SHELL] Error de sintaxis: Múltiples redirecciones no soportadas." << endl;
+         }
+            inputFileExp = true;
+    } else if (token == "|"){
+        if (resultado.pipeline.back().args.empty() || inputFileExp || outputFileExp) {
                 cerr << "[SHELL] Error de sintaxis: Comando vacío en la tubería." << endl;
                 return {};
         }
         outputFileExp = false;
-        pipeline.emplace_back();
+        resultado.pipeline.emplace_back();
 
     } else {
-        if(outputFileExp) {
-          pipeline.back().outputFile = tokens[i];
-          outputFileExp = false;
+        if (outputFileExp) {
+            resultado.pipeline.back().outputFile = token;
+            outputFileExp = false;
+        } else if (inputFileExp) {
+            resultado.pipeline.back().inputFile = token;
+            inputFileExp = false;
         } else {
-          pipeline.back().args.push_back(tokens[i]);
+            resultado.pipeline.back().args.push_back(token);
         }
     }
 
   }
   
-  if (outputFileExp) {
-      cerr << "[SHELL] Error de sintaxis: Falta el nombre del archivo después de '>'." << endl;
+  if (inputFileExp || outputFileExp) {
+      cerr << "[SHELL] Error de sintaxis: Falta nombre de archivo para redirección." << endl;
       return {};
   }
 
-  if (!pipeline.empty() && pipeline.back().args.empty()) {
+  if (!resultado.pipeline.empty() && resultado.pipeline.back().args.empty()) {
       cerr << "[SHELL] Error de sintaxis: La línea no puede terminar con '|'." << endl;
       return {};
   }
 
-  resultado.pipeline = pipeline;
   return resultado;
 }
 

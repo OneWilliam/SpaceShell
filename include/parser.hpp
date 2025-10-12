@@ -6,6 +6,8 @@ using namespace std;
 struct ComandoInfo {
   vector<string> args;
   string outputFile;
+  string inputFile;
+  bool anexar = false;
 };
 
 struct Pipeline_cmd {
