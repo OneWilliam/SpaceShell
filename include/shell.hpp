@@ -11,7 +11,6 @@ class Shell {
   public:
     void run();
   private:
-    void mostrar_prompt();
     string leer_linea();
     void ejecutar(const Pipeline_cmd &args);
     Parser parser;
