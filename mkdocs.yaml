@@ -2,7 +2,7 @@ site_name: SpaceShell
 site_description: Una shell mínima, pero robusta, con customización, funcionalidades básicas y utilidades.
 theme:
   name: material
-  custom_dir: genrated-docs/overrides
+  custom_dir: docs/overrides
   features:
     - navigation.indexes
   palette:
@@ -11,7 +11,7 @@ theme:
       primary: red
       accent: red
       toggle:
-        icon: material/brightness-7 
+        icon: material/brightness-7
         name: Switch to dark mode
 
     # Palette toggle for dark mode

@@ -1,5 +1,8 @@
 /build/
-
+generated-docs/
+docs/
+!docs/*.typ
+site/
 *.o
 *.a
 *.so
