@@ -2,10 +2,10 @@
 #include <string>
 #include <vector>
 using namespace std;
+
 /**
- * @struct ComandoInfo
- * @brief Almacena la información de un único comando simple dentro de una
- * tubería (o pipeline)
+ * Almacena la información de un único comando simple dentro de una
+ * tubería (o pipeline).
  *
  */
 struct ComandoInfo {
@@ -16,8 +16,7 @@ struct ComandoInfo {
 };
 
 /**
- * @struct Pipeline_cmd
- * @brief Representa una línea de comando completa analizada
+ * Representa una línea de comando completa analizada.
  *
  * Contiene una secuencia de comandos simples (separados por '|') y si debe
  * ejecutarse en segundo plano.
@@ -29,8 +28,7 @@ struct Pipeline_cmd {
 };
 
 /**
- * @class Parser
- * @brief Responsable de analizar la entrada de texto
+ * Responsable de analizar la entrada de texto.
  *
  * Convierte una cadena de texto sin procesar en una estructura `Pipeline_cmd`
  * que la shell puede entender y ejecutar. Maneja tuberías, redirecciones,
@@ -39,7 +37,7 @@ struct Pipeline_cmd {
 class Parser {
  public:
   /**
-   * @brief Analiza una línea de comando completa (incluyendo tuberías)
+   * Analiza una línea de comando completa (incluyendo tuberías).
    *
    * @param linea La cadena de texto ingresada
    * @return Una estructura `Pipeline_cmd` que representa el comando analizado.
@@ -49,7 +47,7 @@ class Parser {
 
  private:
   /**
-   * @brief Convierte una línea de texto en una lista de tokens
+   * Convierte una línea de texto en una lista de tokens.
    *
    * Esta función es la primera etapa del análisis.
    * Divide la entrada por espacios, pero respeta los argumentos agrupados por comillas
