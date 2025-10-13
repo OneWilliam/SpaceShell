@@ -13,10 +13,19 @@ fi
 
 echo "[Setup] Ejecutando target: $TARGET ..."
 $BUILD_TOOL $TARGET
+BUILD_EXIT_CODE=$?
 
-if [ "$TARGET" = "all" ] && [ $? -eq 0 ]; then
-  echo "[Setup] Corriendo SpaceShell..."
-  ./spaceshell
+if [ "$TARGET" = "all" ]; then
+  if [ $BUILD_EXIT_CODE -eq 0 ]; then
+    echo "[Setup] Corriendo SpaceShell..."
+    ./spaceshell
+  else
+    echo "[SETUP] ERROR de compilación"
+  fi
 else
-  echo "[SETUP] ERROR de compilación"
+  if [ $BUILD_EXIT_CODE -eq 0 ]; then
+    echo "[Setup] Target '$TARGET' ejecutado exitosamente"
+  else
+    echo "[SETUP] ERROR ejecutando target '$TARGET'"
+  fi
 fi

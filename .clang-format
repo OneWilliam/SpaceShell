@@ -1,1 +1,7 @@
 BasedOnStyle: Google
+ColumnLimit: 120
+AllowShortFunctionsOnASingleLine: All
+AllowShortIfStatementsOnASingleLine: WithoutElse
+AllowShortLoopsOnASingleLine: true
+BinPackParameters: true
+BinPackArguments: true

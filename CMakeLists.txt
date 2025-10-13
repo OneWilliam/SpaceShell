@@ -22,7 +22,7 @@ find_program(CLANG_FORMAT_EXE NAMES clang-format)
 if (CLANG_FORMAT_EXE)
   file(GLOB_RECURSE ALL_SOURCE_FILES
     "${CMAKE_SOURCE_DIR}/src/*.cpp"
-    "${CMAKE_SOURCE_DIR}/include/*.h"
+    "${CMAKE_SOURCE_DIR}/include/*.hpp"
   )
 
   add_custom_target(format
