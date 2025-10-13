@@ -79,10 +79,6 @@ void Shell::run() {
     }
 }
 
-void Shell::mostrar_prompt() {
-    cout << ">>> " << flush;
-}
-
 string Shell::leer_linea() {
     string linea;
     
