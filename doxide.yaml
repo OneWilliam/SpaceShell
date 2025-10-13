@@ -1,5 +1,6 @@
 title: SpaceShell
 description: Una shell mínima, pero robusta, con customización, funcionalidades básicas y utilidades.
+output: docs-theme
 files:
   - "*.hpp"
   - "**/*.hpp"

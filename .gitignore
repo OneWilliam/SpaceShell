@@ -2,6 +2,9 @@
 generated-docs/
 docs/
 !docs/*.typ
+docs-theme/*
+!docs-theme/overrides/
+!docs-theme/overrides/**
 site/
 *.o
 *.a

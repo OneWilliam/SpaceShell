@@ -1,8 +1,9 @@
 site_name: SpaceShell
 site_description: Una shell mínima, pero robusta, con customización, funcionalidades básicas y utilidades.
+docs_dir: docs-theme
 theme:
   name: material
-  custom_dir: docs/overrides
+  custom_dir: docs-theme/overrides
   features:
     - navigation.indexes
   palette:
