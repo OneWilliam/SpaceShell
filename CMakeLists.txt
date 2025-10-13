@@ -16,3 +16,17 @@ src/builtins.cpp
 src/signals.cpp
 src/prompt.cpp
 )
+
+find_program(CLANG_FORMAT_EXE NAMES clang-format)
+
+if (CLANG_FORMAT_EXE)
+  file(GLOB_RECURSE ALL_SOURCE_FILES
+    "${CMAKE_SOURCE_DIR}/src/*.cpp"
+    "${CMAKE_SOURCE_DIR}/include/*.h"
+  )
+
+  add_custom_target(format
+    COMMAND ${CLANG_FORMAT_EXE} -i ${ALL_SOURCE_FILES}
+    COMMENT "[ClANG] Formateando el código fuente con clang-format..."
+  )
+endif()

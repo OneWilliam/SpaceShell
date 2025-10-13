@@ -1,6 +1,7 @@
 #!/bin/bash
 
 BUILD_TOOL="make"
+TARGET=${1:-all}
 
 mkdir -p build
 cd build
@@ -10,10 +11,10 @@ if [ ! -f "Makefile" ]; then
   cmake ..
 fi
 
-echo "[Setup] Compilando el proyecto..."
-$BUILD_TOOL
+echo "[Setup] Ejecutando target: $TARGET ..."
+$BUILD_TOOL $TARGET
 
-if [ $? -eq 0 ]; then
+if [ "$TARGET" = "all" ] && [ $? -eq 0 ]; then
   echo "[Setup] Corriendo SpaceShell..."
   ./spaceshell
 else
