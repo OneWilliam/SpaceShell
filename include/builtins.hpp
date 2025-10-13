@@ -1,26 +1,24 @@
 #pragma once
 
-#include "parser.hpp"
+#include <functional>
+#include <map>
 #include <string>
 #include <vector>
-#include <map>
-#include <functional>
+
+#include "parser.hpp"
 
 using namespace std;
 
 class BuiltinManager {
+ public:
+  BuiltinManager();
 
-  public:
+  bool es_builtin(const string& nombre) const;
+  void ejecutar(const ComandoInfo& cmd);
 
-    BuiltinManager();
+ private:
+  void handle_cd(const ComandoInfo& cmd);
+  void handle_pwd(const ComandoInfo& cmd);
 
-    bool es_builtin(const string& nombre) const;
-    void ejecutar(const ComandoInfo& cmd);
-
-  private:
-
-    void handle_cd(const ComandoInfo& cmd);
-    void handle_pwd(const ComandoInfo& cmd);
-
-    map<string, function<void(const ComandoInfo&)>> builtins;
+  map<string, function<void(const ComandoInfo&)>> builtins;
 };

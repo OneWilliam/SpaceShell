@@ -13,9 +13,7 @@ BuiltinManager::BuiltinManager() {
   builtins["pwd"] = [this](const ComandoInfo& cmd) { this->handle_pwd(cmd); };
 }
 
-bool BuiltinManager::es_builtin(const string& nombre) const {
-  return builtins.count(nombre) > 0;
-}
+bool BuiltinManager::es_builtin(const string& nombre) const { return builtins.count(nombre) > 0; }
 
 void BuiltinManager::ejecutar(const ComandoInfo& cmd) {
   const string& nombre_cmd = cmd.args[0];

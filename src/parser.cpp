@@ -42,10 +42,8 @@ Pipeline_cmd Parser::parsear_linea(const string& linea) {
       }
       inputFileExp = true;
     } else if (token == "|") {
-      if (resultado.pipeline.back().args.empty() || inputFileExp ||
-          outputFileExp) {
-        cerr << "[SHELL] Error de sintaxis: Comando vacío en la tubería."
-             << endl;
+      if (resultado.pipeline.back().args.empty() || inputFileExp || outputFileExp) {
+        cerr << "[SHELL] Error de sintaxis: Comando vacío en la tubería." << endl;
         return {};
       }
       outputFileExp = false;
@@ -72,8 +70,7 @@ Pipeline_cmd Parser::parsear_linea(const string& linea) {
   }
 
   if (!resultado.pipeline.empty() && resultado.pipeline.back().args.empty()) {
-    cerr << "[SHELL] Error de sintaxis: La línea no puede terminar con '|'."
-         << endl;
+    cerr << "[SHELL] Error de sintaxis: La línea no puede terminar con '|'." << endl;
     return {};
   }
 

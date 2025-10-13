@@ -2,6 +2,6 @@
 #include <string>
 
 class Prompt {
-  public:
-    void mostrar();
+ public:
+  void mostrar();
 };

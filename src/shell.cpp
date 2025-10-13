@@ -70,8 +70,7 @@ void Shell::run() {
       break;
     }
 
-    if (comandos.pipeline.size() == 1 &&
-        builtin_manager.es_builtin(nombre_cmd)) {
+    if (comandos.pipeline.size() == 1 && builtin_manager.es_builtin(nombre_cmd)) {
       builtin_manager.ejecutar(primer_cmd);
     } else {
       try {
@@ -123,8 +122,7 @@ void ejecutar_comando(const ComandoInfo& comando) {
   if (!comando.inputFile.empty()) {
     int file_fd = open(comando.inputFile.c_str(), O_RDONLY);
     if (file_fd == -1) {
-      cerr << "[SHELL] Error al abrir el archivo de entrada: "
-           << strerror(errno) << endl;
+      cerr << "[SHELL] Error al abrir el archivo de entrada: " << strerror(errno) << endl;
       exit(EXIT_FAILURE);
     }
     dup2(file_fd, STDIN_FILENO);
@@ -140,8 +138,7 @@ void ejecutar_comando(const ComandoInfo& comando) {
     }
     int file_fd = open(comando.outputFile.c_str(), flags, 0644);
     if (file_fd == -1) {
-      cerr << "[SHELL] Error al abrir el archivo de salida: " << strerror(errno)
-           << endl;
+      cerr << "[SHELL] Error al abrir el archivo de salida: " << strerror(errno) << endl;
       exit(EXIT_FAILURE);
     }
     dup2(file_fd, STDOUT_FILENO);
@@ -163,8 +160,7 @@ void ejecutar_comando(const ComandoInfo& comando) {
 
   cerr << "[SHELL] Error en execv: " << strerror(errno) << endl;
   if (errno == ENOENT) {
-    cerr << "[SHELL] Comando '" << comando.args[0] << "' no encontrado."
-         << endl;
+    cerr << "[SHELL] Comando '" << comando.args[0] << "' no encontrado." << endl;
   }
   exit(EXIT_FAILURE);
 }
@@ -189,8 +185,7 @@ void Shell::ejecutar(const Pipeline_cmd& cmds) {
 
     pid_t pid = fork();
     if (pid == -1) {
-      throw system_error(errno, generic_category(),
-                         "[SHELL] Fallo en fork del pipeline");
+      throw system_error(errno, generic_category(), "[SHELL] Fallo en fork del pipeline");
     }
 
     if (pid == 0) {
@@ -232,9 +227,7 @@ void Shell::ejecutar(const Pipeline_cmd& cmds) {
   if (!cmds.background) {
     for (pid_t child_pid : child_pids) {
       if (waitpid(child_pid, nullptr, 0) == -1) {
-        throw system_error(
-            errno, generic_category(),
-            "[ERROR] Fallo en waitpid en el pipeline para un hijo");
+        throw system_error(errno, generic_category(), "[ERROR] Fallo en waitpid en el pipeline para un hijo");
       }
     }
   } else {
