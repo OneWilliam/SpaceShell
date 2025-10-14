@@ -1,5 +1,9 @@
-# SpaceShell
-Una shell mínima, pero robusta, con customización, funcionalidades básicas y utilidades.
+<div align="center">
+<img width="256" height="256" alt="icon" src="https://github.com/user-attachments/assets/f0f979af-c51b-4e16-bfc1-69dd9963b397" />
+<h1>SpaceShell</h1>
+<h2><i>Una shell mínima, pero robusta, con customización, funcionalidades básicas y utilidades.</i></h2>
+</div>
+
 
 ## Características
 
