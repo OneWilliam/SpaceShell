@@ -17,6 +17,9 @@ src/signals.cpp
 src/prompt.cpp
 )
 
+find_package(Threads REQUIRED)
+target_link_libraries(spaceshell PRIVATE Threads::Threads)
+
 find_program(CLANG_FORMAT_EXE NAMES clang-format)
 
 if (CLANG_FORMAT_EXE)

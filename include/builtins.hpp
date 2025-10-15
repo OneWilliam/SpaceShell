@@ -51,6 +51,13 @@ class BuiltinManager {
   void handle_pwd(const ComandoInfo& cmd);
 
   /**
+   * Implementación del comando 'parallel'. Ejecuta múltiples comandos en hilos concurrentes.
+   *
+   * @param cmd El comando 'parallel' seguido de la lista de comandos a ejecutar.
+   */
+  void handle_parallel(const ComandoInfo& cmd);
+
+  /**
    * Mapa que asocia nombres de comandos con las funciones que los implementan.
    */
   map<string, function<void(const ComandoInfo&)>> builtins;
