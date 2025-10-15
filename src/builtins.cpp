@@ -11,6 +11,7 @@ using namespace std;
 BuiltinManager::BuiltinManager() {
   builtins["cd"] = [this](const ComandoInfo& cmd) { this->handle_cd(cmd); };
   builtins["pwd"] = [this](const ComandoInfo& cmd) { this->handle_pwd(cmd); };
+  builtins["parallel"] = [this](const ComandoInfo& cmd) { this->handle_parallel(cmd);
 }
 
 bool BuiltinManager::es_builtin(const string& nombre) const { return builtins.count(nombre) > 0; }
@@ -44,4 +45,8 @@ void BuiltinManager::handle_pwd(const ComandoInfo& cmd) {
   } else {
     perror("[SHELL] pwd");
   }
+}
+
+void BuiltinManager::handle_parallel(const ComandoInfo& cmd){
+  
 }
