@@ -23,12 +23,15 @@ void Shell::run() {
   string linea;
 
   while (true) {
-    if (g_signal_recv == SIGINT) {
-      cout << "\n" << flush;
-      g_signal_recv = 0;
-      continue;
-    }
-
+    int status;
+    pid_t finalizado_pid;
+    while ((finalizado_pid = waitpid(-1, &status, WNOHANG)) > 0) {
+      auto it = find(background_pids.begin(), background_pids.end(), finalizado_pid);
+      if (it != background_pids.end()) {
+        cout << endl << "[SHELL] [Proceso en segundo plano " << finalizado_pid << " ha terminado]" << endl;
+        background_pids.erase(it);
+      }
+    };
     prompt.mostrar();
     linea = leer_linea();
 

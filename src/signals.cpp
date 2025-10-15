@@ -10,11 +10,12 @@
 volatile sig_atomic_t g_signal_recv = 0;
 
 void Signals::handle_sigchld(int signum) {
-  int saved_errno = errno;
+  /*int saved_errno = errno;
   while (waitpid(-1, nullptr, WNOHANG) > 0) {
     // TODO: Implementación de salida de  finalización de procesos child...
   }
-  errno = saved_errno;
+  errno = saved_errno;*/
+  g_signal_recv = signum;
 }
 
 void Signals::handle_sigint(int signum) { g_signal_recv = signum; }
