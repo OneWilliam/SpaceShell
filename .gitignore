@@ -1,7 +1,8 @@
 /build/
 generated-docs/
-docs/
+docs/*
 !docs/*.typ
+!docs/*.pdf
 docs-theme/*
 !docs-theme/overrides/
 !docs-theme/overrides/**
