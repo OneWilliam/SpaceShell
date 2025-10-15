@@ -57,6 +57,8 @@ void* thread_cmd(void* cmd_nombre_ptr) {
   pid_t pid = fork();
   if (pid == 0) {
     ComandoInfo cmd_temp;
+    cmd_temp.args.push_back("sh");
+    cmd_temp.args.push_back("-c");
     cmd_temp.args.push_back(cmd_nombre);
 
     ejecutar_comando(cmd_temp);
